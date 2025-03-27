@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "generated.grpc.smarthome";
+option java_outer_classname = "SmartHomeImpl";
+
+package SmartHome;
+
+dependency "google/protobuf/timestamp.proto";
+
+// 1. Smart Home Security Service
+service SmartSecurityService {
+  rpc MonitorSurveillance (Empty) returns (SurveillanceResponse);
+  rpc RemoteLock (LockRequest) returns (LockResponse);
+  rpc DetectAbnormality (Empty) returns (AlertResponse);
+}
+
+message Empty {}
+
+message SurveillanceResponse {
+  string camera_feed_url = 1;
+  bool motion_detected = 2;
+}
+
+message LockRequest {
+  bool lock = 1; // true to lock, false to unlock
+}
+
+message LockResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message AlertResponse {
+  bool alert_triggered = 1;
+  string alert_message = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+// 2. Climate Control Service
+service ClimateControlService {
+  rpc GetClimateData (Empty) returns (ClimateData);
+  rpc SetTemperature (TemperatureRequest) returns (TemperatureResponse);
+}
+
+message ClimateData {
+  float temperature = 1;
+  float humidity = 2;
+}
+
+message TemperatureRequest {
+  float target_temperature = 1;
+}
+
+message TemperatureResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// 3. Smart Lighting Service
+service SmartLightingService {
+  rpc ControlLight (LightRequest) returns (LightResponse);
+  rpc GetLightStatus (Empty) returns (LightStatus);
+}
+
+message LightRequest {
+  string room = 1;
+  bool turn_on = 2;
+}
+
+message LightResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message LightStatus {
+  string room = 1;
+  bool is_on = 2;
+}
+
+
+
+
+
+
+
+
