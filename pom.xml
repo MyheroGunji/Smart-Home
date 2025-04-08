@@ -1,73 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>DistSys</groupId>
-    <artifactId>SmartHomeProject</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>17</maven.compiler.release>
-        <exec.mainClass>distsys.smarthomeproject.SmartHomeProject</exec.mainClass>
-    </properties>
-    
-      <dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.example</groupId>
+	<artifactId>SmartHomeProject2</artifactId>
+	<version>1.0-SNAPSHOT</version>
+
+	<properties>
+		<!-- Java 8に設定 -->
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- Protocol Buffers (最新バージョンに更新) -->
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
-			<version>3.6.1</version>
+			<version>3.21.9</version> <!-- 最新バージョンに変更 -->
 		</dependency>
 
+		<!-- gRPC Dependencies (最新バージョンに更新) -->
 		<dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-netty-shaded</artifactId>
-			<version>1.15.1</version>
+			<version>1.49.0</version> <!-- 最新バージョンに変更 -->
 		</dependency>
 		<dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-protobuf</artifactId>
-			<version>1.15.1</version>
+			<version>1.49.0</version> <!-- 最新バージョンに変更 -->
 		</dependency>
-		
 		<dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-stub</artifactId>
-			<version>1.15.1</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.google.protobuf</groupId>
-		    <artifactId>protobuf-java-util</artifactId>
-		    <version>3.6.1</version>
+			<version>1.49.0</version> <!-- 最新バージョンに変更 -->
 		</dependency>
 
+		<!-- protobufの補助ライブラリ -->
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java-util</artifactId>
+			<version>3.21.9</version> <!-- 最新バージョンに変更 -->
+		</dependency>
+
+		<!-- Guava (grpcが依存しているライブラリ) -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>28.2-jre</version>
 		</dependency>
-		
-		<!--  added this to resolve issue with javax.annotation not found -->
-		<dependency>
-			 <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-             <version>1.2</version>
 
+		<!-- javax.annotation (gRPCの依存関係として必要) -->
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
 		</dependency>
 
-
 	</dependencies>
-
-<!--   <properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>-->
 
 	<build>
 
 		<defaultGoal>clean generate-sources compile install</defaultGoal>
 
 		<plugins>
-			<!-- compile proto file into java files. -->
+			<!-- protoc-jar-maven-plugin: .protoファイルをコンパイル -->
 			<plugin>
 				<groupId>com.github.os72</groupId>
 				<artifactId>protoc-jar-maven-plugin</artifactId>
@@ -92,7 +93,7 @@
 								</outputTarget>
 								<outputTarget>
 									<type>grpc-java</type>
-									<pluginArtifact>io.grpc:protoc-gen-grpc-java:1.15.0</pluginArtifact>
+									<pluginArtifact>io.grpc:protoc-gen-grpc-java:1.49.0</pluginArtifact> <!-- gRPCの最新バージョンに変更 -->
 									<outputDirectory>src/main/java</outputDirectory>
 								</outputTarget>
 							</outputTargets>
@@ -102,7 +103,7 @@
 				</executions>
 			</plugin>
 
- 
+			<!-- コンパイル設定 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -112,7 +113,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 </project>
