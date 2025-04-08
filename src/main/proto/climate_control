@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "generated.grpc.smarthome";
+option java_outer_classname = "SmartHomeImpl";
+
+package SmartHome;
+
+// 他の依存をインポートする
+import "google/protobuf/timestamp.proto";
+
+// 温度ストリーミングサービス
+service ClimateControl {
+  // 温度を連続的に送信する
+  rpc StreamTemperature (SensorRequest) returns (stream TemperatureData);
+}
+
+// リクエストメッセージ
+message SensorRequest {
+  // 監視対象の部屋
+  string room = 1;
+}
+
+// レスポンスメッセージ
+message TemperatureData {
+  // 温度
+  float temperature = 1;
+  // タイムスタンプ（時間）
+  string timestamp = 2;
+}
