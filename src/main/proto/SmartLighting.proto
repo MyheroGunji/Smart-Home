@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "generated.grpc.smartlightning";
+option java_outer_classname = "SmartLightingImpl";
+
+package SmartLighting;
+
+// The service definition.
+// The server that you implement must extend the class  <servicename>ImplBase
+// so in this example you will create a server class that extends ZooService2ImplBase
+
+// スマートライティングサービス
+service SmartLighting {
+  rpc TurnOnLight (LightRequest) returns (LightResponse);
+  rpc TurnOffLight (LightRequest) returns (LightResponse);
+}
+
+// メッセージ定義
+message LightRequest {
+  string room = 1;
+}
+
+message LightResponse {
+  string status = 1;
+}
+   
+
