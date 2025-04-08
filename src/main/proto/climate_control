@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "generated.grpc.smarthome";
+option java_package = "grpc.generated.smarthome";
 option java_outer_classname = "SmartHomeImpl";
 
 package SmartHome;
