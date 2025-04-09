@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "generated.grpc.securitycameraservice";
+option java_outer_classname = "SecurityCameraServiceImpl";
+
+package SecurityCameraService;
+
+service SecurityCameraService {
+  // 映像送受信＋リアルタイム操作（ズーム、パンなど）
+  rpc StreamLiveCamera (stream CameraControl) returns (stream CameraFeed);
+
+  // モーション検知 → 単発通知
+  rpc SendMotionAlert (MotionEvent) returns (MotionAck);
+
+  // 静止画通知（サーバーが何枚か送る）
+  rpc ReceiveCameraSnapshots (SnapshotRequest) returns (stream SnapshotImage);
+
+  // クライアント側で過去のログをまとめて送信
+  rpc UploadCameraLog (stream CameraLogEntry) returns (UploadResult);
+}
+
+// ====== メッセージ定義 ======
+
+message CameraControl {
+  string command = 1;        // 例: "zoom_in", "pan_left"
+  string camera_id = 2;
+}
+
+message CameraFeed {
+  bytes video_chunk = 1;
+  string status = 2;         // 例: "OK", "ERROR"
+}
+
+message MotionEvent {
+  string camera_id = 1;
+  string motion_type = 2;    // 例: "movement", "face_detected"
+  string timestamp = 3;
+}
+
+message MotionAck {
+  string message = 1;
+  string received_at = 2;
+}
+
+message SnapshotRequest {
+  string camera_id = 1;
+  int32 count = 2;           // 何枚欲しいか
+}
+
+message SnapshotImage {
+  bytes image_data = 1;
+  string timestamp = 2;
+}
+
+message CameraLogEntry {
+  string log_type = 1;       // 例: "event", "error"
+  string description = 2;
+  string timestamp = 3;
+}
+
+message UploadResult {
+  int32 entry_count = 1;
+  string message = 2;
+}

@@ -81,6 +81,7 @@
 						</goals>
 						<configuration>
 							<includeMavenTypes>direct</includeMavenTypes>
+							<includeStdTypes>true</includeStdTypes>
 
 							<inputDirectories>
 								<include>src/main/proto</include>
