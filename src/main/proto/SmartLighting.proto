@@ -6,10 +6,6 @@ option java_outer_classname = "SmartLightingImpl";
 
 package SmartLighting;
 
-// The service definition.
-// The server that you implement must extend the class  <servicename>ImplBase
-// so in this example you will create a server class that extends ZooService2ImplBase
-
 // スマートライティングサービス
 service SmartLighting {
   rpc TurnOnLight (LightRequest) returns (LightResponse);

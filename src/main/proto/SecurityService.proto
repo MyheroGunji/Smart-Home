@@ -6,10 +6,6 @@ option java_outer_classname = "SecurityServiceImpl";
 
 package SecurityService;
 
-// The service definition.
-// The server that you implement must extend the class  <servicename>ImplBase
-// so in this example you will create a server class that extends ZooService2ImplBase
-
 // セキュリティ監視と制御サービス
 service SecurityService {
   // クライアントストリーミング：センサーデータをバッチ送信
