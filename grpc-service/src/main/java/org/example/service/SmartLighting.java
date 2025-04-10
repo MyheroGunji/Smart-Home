@@ -1,13 +1,14 @@
-package distsys.smarthomeproject.service;
+package org.example.service;
 
 import generated.grpc.smartlightning.LightRequest;
 import generated.grpc.smartlightning.LightResponse;
 import generated.grpc.smartlightning.SmartLightingGrpc;
 import io.grpc.stub.StreamObserver;
+import org.springframework.grpc.server.service.GrpcService;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@GrpcService
 public class SmartLighting extends SmartLightingGrpc.SmartLightingImplBase {
         // 部屋ごとのライトの状態を保存する仮のデータ
         private Map<String, Boolean> roomLights = new HashMap<>();
@@ -21,7 +22,7 @@ public class SmartLighting extends SmartLightingGrpc.SmartLightingImplBase {
 
         @Override
         public void turnOnLight(LightRequest request, StreamObserver<LightResponse> responseObserver) {
-            super.turnOnLight( request, responseObserver );
+
             String room = request.getRoom();
 
             // 部屋が存在するか確認し、ライトをオンにする
@@ -43,7 +44,7 @@ public class SmartLighting extends SmartLightingGrpc.SmartLightingImplBase {
 
         @Override
         public void turnOffLight(LightRequest request, StreamObserver<LightResponse> responseObserver) {
-           super.turnOffLight( request, responseObserver );
+
             String room = request.getRoom();
 
             // 部屋が存在するか確認し、ライトをオフにする

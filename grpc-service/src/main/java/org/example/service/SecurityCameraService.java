@@ -1,4 +1,4 @@
-package distsys.smarthomeproject.service;
+package org.example.service;
 
 import com.google.protobuf.ByteString;
 import generated.grpc.securitycameraservice.*;
@@ -44,14 +44,13 @@ public class SecurityCameraService extends SecurityCameraServiceGrpc.SecurityCam
 
     @Override
     public void sendMotionAlert(MotionEvent request, StreamObserver<MotionAck> responseObserver) {
-        super.sendMotionAlert( request, responseObserver );
         System.out.println("Motion alert received from camera: " + request.getCameraId());
         System.out.println("Motion type: " + request.getMotionType());
         System.out.println("Timestamp: " + request.getTimestamp());
 
         MotionAck ack = MotionAck.newBuilder()
                 .setMessage("Motion received successfully")
-                .setReceivedAt(java.time.Instant.now().toString())
+                .setReceivedAt( Instant.now().toString())
                 .build();
 
         responseObserver.onNext(ack);
@@ -60,7 +59,6 @@ public class SecurityCameraService extends SecurityCameraServiceGrpc.SecurityCam
 
     @Override
     public void receiveCameraSnapshots(SnapshotRequest request, StreamObserver<SnapshotImage> responseObserver) {
-        super.receiveCameraSnapshots( request, responseObserver );
         int count = request.getCount();
         String cameraId = request.getCameraId();  // 必要なら使えるように保持
 

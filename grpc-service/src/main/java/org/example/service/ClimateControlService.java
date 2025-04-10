@@ -1,10 +1,12 @@
-package distsys.smarthomeproject.service;
+package org.example.service;
 
 import generated.grpc.climatecontrolservice.ClimateControlServiceGrpc;
 import generated.grpc.climatecontrolservice.RoomLocation;
 import generated.grpc.climatecontrolservice.Temperature;
 import io.grpc.stub.StreamObserver;
+import org.springframework.grpc.server.service.GrpcService;
 
+@GrpcService
 public class ClimateControlService extends ClimateControlServiceGrpc.ClimateControlServiceImplBase {
     @Override
     public void monitorTemperature(RoomLocation request, StreamObserver<Temperature> responseObserver) {
@@ -28,7 +30,7 @@ public class ClimateControlService extends ClimateControlServiceGrpc.ClimateCont
 
     @Override
     public void currentTemperature(RoomLocation request, StreamObserver<Temperature> responseObserver) {
-        super.currentTemperature( request, responseObserver );
+
         // 固定温度を返す
         Temperature temp = Temperature.newBuilder()
                 .setValue(22.5)  // 現在の温度を返す

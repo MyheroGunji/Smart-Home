@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SmartHomeProject.iml" filepath="$PROJECT_DIR$/SmartHomeProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/grpc-service.iml" filepath="$PROJECT_DIR$/grpc-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/proto.iml" filepath="$PROJECT_DIR$/proto.iml" />
     </modules>
   </component>
 </project>

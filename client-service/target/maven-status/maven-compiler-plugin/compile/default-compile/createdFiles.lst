@@ -1,0 +1,3 @@
+org\example\ClientServiceApplication.class
+org\example\controller\ClimateController.class
+org\example\config\StubConfig.class
