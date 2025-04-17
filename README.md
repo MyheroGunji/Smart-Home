@@ -1,5 +1,7 @@
 # Smart Home Project - Structure Overview
 
+## Author: **Mahiro Gunji** 
+
 This project is a gRPC-based Smart Home simulation that includes modular services for:
 
 -  Climate Control  
