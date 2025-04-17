@@ -9,31 +9,33 @@ package ClimateControlService;
 // ClimateControlService manages the temperature of various locations in the home.
 // There are thermostats in each enclosure that measure the temperature
 
-// スマートホーム内の温度を管理するサービス
+// A service that manages the temperature in smart home. スマートホーム内の温度を管理するサービス
 service ClimateControlService {
 
+  // Receive a stream of temperature from a specified room for use in the dashboard.
   // ダッシュボードに使うため、指定した部屋の温度のストリームを受け取る
   //Server Streaming RPC
   rpc MonitorTemperature(RoomLocation) returns (stream Temperature) {}
 
-  // 今現在の部屋の温度を取得する
+  // Get the current room temperature
   //Unary RPC
   rpc CurrentTemperature(RoomLocation) returns (Temperature) {}
 
-  // クライアントが送った温度の一覧から、平均温度を計算する
-  //Client Streaming RPC	クライアントが複数の温度を送って、サーバーが平均を計算して1回返す
+  // Calculate the average temperature from the list of temperatures sent by the client クライアントが送った温度の一覧から、平均温度を計算する
+  // Client Streaming RPC	クライアントが複数の温度を送って、サーバーが平均を計算して1回返す
   rpc AverageTemperature(stream Temperature) returns (Temperature) {}
 
-  // BiDi: 部屋ごとに温度を送って、サーバーがそれぞれの現在温度を返す（週6で実装）
+  // BiDi: Send the temperature for each room, and the server will return the current temperature for each room.
+  // 部屋ごとに温度を送って、サーバーがそれぞれの現在温度を返す（週6で実装）
   // rpc AllRoomsTemperature(stream RoomLocation) returns (stream Temperature) {}
 }
 
-// 部屋の場所を表すメッセージ
+// Room Location. 部屋の場所を表すメッセージ
 message RoomLocation {
   string roomName = 1;
 }
 
-// 温度データ
+// Temperature Data. 温度データ
 message Temperature {
   double value = 1;
 }

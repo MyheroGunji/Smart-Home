@@ -12,20 +12,27 @@ import java.util.List;
 @GrpcService
 public class SecurityCameraService extends SecurityCameraServiceGrpc.SecurityCameraServiceImplBase {
     @Override
+    // BiDi RPC
+    /* Receives camera operations (zoom, pan, etc.) from the client,
+    processes them on the server side, and returns the results (camera image) to the client. */
+
     public StreamObserver<CameraControl> streamLiveCamera(StreamObserver<CameraFeed> responseObserver) {
         // 新しいStreamObserverを返す
+        // return new StreamObserver
         return new StreamObserver<CameraControl>() {
             @Override
             public void onNext(CameraControl control) {
                 // クライアントからのコマンドを処理（例：ズーム、パンなど）
+                // process command from client (ex: zooming or pan)
                 System.out.println("Received control command: " + control.getCommand());
                 // 仮の映像データを返す（実際にはカメラ操作の結果を返す）
+                // return the dummy video data
                 CameraFeed feed = CameraFeed.newBuilder()
                         .setVideoChunk(ByteString.copyFromUtf8("dummy_video_data"))
                         .setStatus("OK")
                         .build();
 
-                responseObserver.onNext(feed);  // カメラ映像をクライアントに返す
+                responseObserver.onNext(feed);  // Return the camera feed to client カメラ映像をクライアントに返す
             }
 
             @Override
@@ -35,13 +42,14 @@ public class SecurityCameraService extends SecurityCameraServiceGrpc.SecurityCam
 
             @Override
             public void onCompleted() {
-                // ストリームが終了した場合
+                // When stream is done, print the message
                 System.out.println("Stream completed");
                 responseObserver.onCompleted();
             }
         };
     }
 
+    // Unary RPC
     @Override
     public void sendMotionAlert(MotionEvent request, StreamObserver<MotionAck> responseObserver) {
         System.out.println("Motion alert received from camera: " + request.getCameraId());
@@ -57,6 +65,7 @@ public class SecurityCameraService extends SecurityCameraServiceGrpc.SecurityCam
         responseObserver.onCompleted();
     }
 
+    // Server Streaming
     @Override
     public void receiveCameraSnapshots(SnapshotRequest request, StreamObserver<SnapshotImage> responseObserver) {
         int count = request.getCount();
@@ -72,15 +81,17 @@ public class SecurityCameraService extends SecurityCameraServiceGrpc.SecurityCam
 
             // ちょっとリアルっぽくするなら少し待つ
             try {
-                Thread.sleep(500); // 0.5sec
+                Thread.sleep(500); // 0.5sec wait
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
-        responseObserver.onCompleted(); // 最後に必ずこれでストリーム終了を伝える
+        responseObserver.onCompleted(); // end of streaming
     }
 
+    // Client Streaming
+    // The client streams CameraLogEntry multiple times and at the end, server returns message
     @Override
     public StreamObserver<CameraLogEntry> uploadCameraLog(StreamObserver<UploadResult> responseObserver) {
         List<CameraLogEntry> receivedLogs = new ArrayList<>();
@@ -101,7 +112,7 @@ public class SecurityCameraService extends SecurityCameraServiceGrpc.SecurityCam
             public void onCompleted() {
                 UploadResult result = UploadResult.newBuilder()
                         .setEntryCount(receivedLogs.size())
-                        .setMessage("ログアップロード完了！")
+                        .setMessage("Complete log upload!")
                         .build();
 
                 responseObserver.onNext(result);

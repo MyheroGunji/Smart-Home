@@ -7,38 +7,38 @@ option java_outer_classname = "SecurityCameraServiceImpl";
 package SecurityCameraService;
 
 service SecurityCameraService {
-  // 映像送受信＋リアルタイム操作（ズーム、パンなど）
+  // Video transmission and reception + real-time operation (zoom, pan, etc.) 映像送受信＋リアルタイム操作（ズーム、パンなど）
   // Bidirectional streaming
   rpc StreamLiveCamera (stream CameraControl) returns (stream CameraFeed);
 
-  // モーション検知 → 単発通知
+  // Motion detection → single notification モーション検知 → 単発通知
   // unary
   rpc SendMotionAlert (MotionEvent) returns (MotionAck);
 
-  // 静止画通知（サーバーが何枚か送る）
-  //Server streaming
+  // Still image notification (sever sends several images). 静止画通知（サーバーが何枚か送る）
+  // Server streaming
   rpc ReceiveCameraSnapshots (SnapshotRequest) returns (stream SnapshotImage);
 
-  // クライアント側で過去のログをまとめて送信
+  // Send past logs collectively on the client side. クライアント側で過去のログをまとめて送信
   // Client Streaming
   rpc UploadCameraLog (stream CameraLogEntry) returns (UploadResult);
 }
 
-// ====== メッセージ定義 ======
+// ====== Define the message ======
 
 message CameraControl {
-  string command = 1;        // 例: "zoom_in", "pan_left"
+  string command = 1;        // ex: "zoom_in", "pan_left"
   string camera_id = 2;
 }
 
 message CameraFeed {
   bytes video_chunk = 1;
-  string status = 2;         // 例: "OK", "ERROR"
+  string status = 2;         // ex: "OK", "ERROR"
 }
 
 message MotionEvent {
   string camera_id = 1;
-  string motion_type = 2;    // 例: "movement", "face_detected"
+  string motion_type = 2;    // ex: "movement", "face_detected"
   string timestamp = 3;
 }
 
@@ -49,7 +49,7 @@ message MotionAck {
 
 message SnapshotRequest {
   string camera_id = 1;
-  int32 count = 2;           // 何枚欲しいか
+  int32 count = 2;           // How many shots you need
 }
 
 message SnapshotImage {
@@ -58,7 +58,7 @@ message SnapshotImage {
 }
 
 message CameraLogEntry {
-  string log_type = 1;       // 例: "event", "error"
+  string log_type = 1;       // ex: "event", "error"
   string description = 2;
   string timestamp = 3;
 }

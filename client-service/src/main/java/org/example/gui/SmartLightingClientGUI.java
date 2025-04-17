@@ -29,26 +29,26 @@ public class SmartLightingClientGUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new GridLayout(4, 1));
 
-        // gRPCチャンネル設定
+        // Set gRPC channel. grpcチャンネル設定
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
         blockingStub = SmartLightingGrpc.newBlockingStub(channel);
 
-        // 部屋選択用
+        // Choose the room. 部屋選択用
         String[] rooms = {"Living Room", "Kitchen", "Bedroom", "Bathroom"};
         roomSelector = new JComboBox<>(rooms);
 
-        // ボタンとラベル
+        // Button and label ボタンとラベル
         turnOnButton = new JButton("Turn ON");
         turnOffButton = new JButton("Turn OFF");
         statusLabel = new JLabel("Status: Waiting", SwingConstants.CENTER);
 
-        // ボタン動作
+        // Button action. ボタン動作
         turnOnButton.addActionListener(e -> sendLightCommand(true));
         turnOffButton.addActionListener(e -> sendLightCommand(false));
 
-        // パネルに追加
+        // Add in Panel. パネルに追加
         add(roomSelector);
         add(turnOnButton);
         add(turnOffButton);

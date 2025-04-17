@@ -62,7 +62,7 @@ public class SecurityCameraClientGUI extends JFrame {
         responseArea.setEditable(false);
         add(new JScrollPane(responseArea), BorderLayout.SOUTH);
 
-        // ボタン押下時の処理
+        // Process of when you press button ボタン押下時の処理
         startButton.addActionListener(e -> {
             String room = roomInput.getText().trim();
             if (!room.isEmpty()) {
@@ -83,18 +83,18 @@ public class SecurityCameraClientGUI extends JFrame {
     }
 
     private void startMonitoring(String roomName) {
-        // モニタリング開始
+        // Start monitoring
         responseArea.append("Monitoring started for room: " + roomName + "\n");
 
-        // SnapshotRequestの作成（カメラIDやその他の情報が必要な場合追加）
+        // Make a SnapshotRequest. SnapshotRequestの作成（カメラIDやその他の情報が必要な場合追加）
         SnapshotRequest request = SnapshotRequest.newBuilder()
                 .setCameraId("camera_1")  // 必要に応じて適切なカメラIDを指定
-                .setCount(5)  // 例: 5枚のスナップショットを要求
+                .setCount(5)  // 5 snap shots. 例: 5枚のスナップショットを要求
                 .build();
 
-        // サーバーからのリアルタイムアラート受信
+        // Receive real-time alerts from server サーバーからのリアルタイムアラート受信
         asyncStub.receiveCameraSnapshots(
-                request,  // ここでリクエストを送信
+                request,  // send request
                 new StreamObserver<SnapshotImage>() {
                     @Override
                     public void onNext(SnapshotImage value) {
