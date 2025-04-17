@@ -23,7 +23,7 @@ client-service/
 │       └── java/
 │           ├── config/
 │               └── StubConfig.java  # Configuration for gRPC stubs
-│               └── ApiKeyFilterConfig.java               
+│               └── SecurityConfig.java               
 │           ├── controller/
 │               └── ClimateController
 │           ├── security/                   
