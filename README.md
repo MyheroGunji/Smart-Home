@@ -22,9 +22,12 @@ client-service/
 │   └── main/
 │       └── java/
 │           ├── config/
-│               └── StubConfig.java  # Configuration for gRPC stubs               
+│               └── StubConfig.java  # Configuration for gRPC stubs
+│               └── ApiKeyFilterConfig.java               
 │           ├── controller/
 │               └── ClimateController
+│           ├── security/                   
+│           │   └── ApiKeyFilter.java 
 │           ├── ClientServiceApplication.java  # Entry point for the client GUI
 │           └── gui/                
 │               ├── ClimateControlClientGUI.java
