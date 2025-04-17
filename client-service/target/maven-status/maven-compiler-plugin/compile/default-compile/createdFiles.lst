@@ -3,7 +3,9 @@ org\example\controller\ClimateController.class
 org\example\gui\SecurityCameraClientGUI$1.class
 org\example\config\StubConfig.class
 org\example\ClientServiceApplication.class
+org\example\controller\SecurityCameraController.class
 org\example\gui\SmartLightingClientGUI.class
 org\example\gui\ClimateControlClientGUI.class
 org\example\gui\ClimateControlClientGUI$1.class
 org\example\gui\SecurityCameraClientGUI.class
+org\example\controller\SmartLightingController.class
