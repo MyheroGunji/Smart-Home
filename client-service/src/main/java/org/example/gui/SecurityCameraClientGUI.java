@@ -2,12 +2,12 @@ package org.example.gui;
 
 import generated.grpc.securitycameraservice.*;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
+import io.grpc.*;
 import io.grpc.stub.StreamObserver;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.Executor;
 
 public class SecurityCameraClientGUI extends JFrame {
 
@@ -17,6 +17,7 @@ public class SecurityCameraClientGUI extends JFrame {
     private JButton startButton;
     private JButton sendEventButton;
     private JTextArea responseArea;
+    private JTextField apiKeyField;
 
     private SecurityCameraServiceGrpc.SecurityCameraServiceStub asyncStub;
 
@@ -27,13 +28,17 @@ public class SecurityCameraClientGUI extends JFrame {
         setLayout(new BorderLayout());
 
         // gRPC接続
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50052)
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
                 .usePlaintext()
                 .build();
         asyncStub = SecurityCameraServiceGrpc.newStub(channel);
 
         // UIパーツ
         JPanel topPanel = new JPanel(new GridLayout(2, 2));
+        topPanel.add(new JLabel("API Key:"));
+        apiKeyField = new JTextField();
+        topPanel.add(apiKeyField);
+
         topPanel.add(new JLabel("Room:"));
         roomInput = new JTextField();
         topPanel.add(roomInput);
@@ -58,6 +63,7 @@ public class SecurityCameraClientGUI extends JFrame {
 
         add(inputPanel, BorderLayout.CENTER);
 
+        // Response Output area
         responseArea = new JTextArea();
         responseArea.setEditable(false);
         add(new JScrollPane(responseArea), BorderLayout.SOUTH);
@@ -82,6 +88,43 @@ public class SecurityCameraClientGUI extends JFrame {
         });
     }
 
+    // APIキーを設定するインターセプタを作成
+    private SecurityCameraServiceGrpc.SecurityCameraServiceStub getStubWithApiKey() {
+        String apiKey = apiKeyField.getText().trim();
+        Metadata metadata = new Metadata();
+        Metadata.Key<String> apiKeyHeader = Metadata.Key.of("x-api-key", Metadata.ASCII_STRING_MARSHALLER);
+        metadata.put(apiKeyHeader, apiKey);
+
+        // ClientInterceptorを使用してヘッダーを追加
+        ClientInterceptor interceptor = new ClientInterceptor() {
+            @Override
+            public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(
+                    MethodDescriptor<ReqT, RespT> method, CallOptions callOptions, Channel next) {
+
+                // メタデータを含めるための新しいCallOptionsを作成
+                CallOptions newCallOptions = callOptions.withCallCredentials(new CallCredentials() {
+                    @Override
+                    public void applyRequestMetadata(RequestInfo requestInfo, Executor executor, MetadataApplier metadataApplier) {
+                        // メタデータの設定
+                        metadataApplier.apply(metadata);
+                    }
+
+                    @Override
+                    public void thisUsesUnstableApi() {
+                    }
+                });
+
+                // 新しいCallOptionsを使ってClientCallを作成
+                return next.newCall(method, newCallOptions);
+            }
+        };
+
+        // インターセプタ付きの新しいStubを作成
+        Channel channelWithInterceptor = ClientInterceptors.intercept(asyncStub.getChannel(), interceptor);
+        return SecurityCameraServiceGrpc.newStub(channelWithInterceptor);
+    }
+
+
     private void startMonitoring(String roomName) {
         // Start monitoring
         responseArea.append("Monitoring started for room: " + roomName + "\n");
@@ -92,8 +135,10 @@ public class SecurityCameraClientGUI extends JFrame {
                 .setCount(5)  // 5 snap shots. 例: 5枚のスナップショットを要求
                 .build();
 
+        SecurityCameraServiceGrpc.SecurityCameraServiceStub stubWithAuth = getStubWithApiKey();
+
         // Receive real-time alerts from server サーバーからのリアルタイムアラート受信
-        asyncStub.receiveCameraSnapshots(
+        stubWithAuth.receiveCameraSnapshots(
                 request,  // send request
                 new StreamObserver<SnapshotImage>() {
                     @Override
@@ -126,8 +171,10 @@ public class SecurityCameraClientGUI extends JFrame {
                 .setTimestamp(java.time.Instant.now().toString())
                 .build();
 
+        SecurityCameraServiceGrpc.SecurityCameraServiceStub stubWithAuth = getStubWithApiKey();
+
         // サーバーに送信して応答を取得
-        asyncStub.sendMotionAlert(request, new StreamObserver<MotionAck>() {
+        stubWithAuth.sendMotionAlert(request, new StreamObserver<MotionAck>() {
             @Override
             public void onNext(MotionAck response) {
                 SwingUtilities.invokeLater(() -> {

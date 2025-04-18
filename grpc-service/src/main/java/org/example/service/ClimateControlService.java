@@ -16,7 +16,6 @@ public class ClimateControlService extends ClimateControlServiceGrpc.ClimateCont
     to a client, allowing the client to receive temperature changes in real time.
     */
     public void monitorTemperature(RoomLocation request, StreamObserver<Temperature> responseObserver) {
-        super.monitorTemperature( request, responseObserver );
         String roomName = request.getRoomName();
         for (int i = 0; i < 10; i++) {
             Temperature temp = Temperature.newBuilder()

@@ -1,55 +1,49 @@
 package org.example.gui;
 
-// SmartLightingClientGUI.java
-
-import generated.grpc.smartlightning.SmartLightingGrpc;
-import generated.grpc.smartlightning.LightRequest;
-import generated.grpc.smartlightning.LightResponse;
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class SmartLightingClientGUI extends JFrame {
 
     private JComboBox<String> roomSelector;
+    private JTextField apiKeyField;
     private JButton turnOnButton;
     private JButton turnOffButton;
     private JLabel statusLabel;
 
-    private SmartLightingGrpc.SmartLightingBlockingStub blockingStub;
-
     public SmartLightingClientGUI() {
         setTitle("Smart Lighting Controller");
-        setSize(400, 200);
+        setSize(400, 250);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new GridLayout(4, 1));
+        setLayout(new GridLayout(5, 1));
 
-        // Set gRPC channel. grpcチャンネル設定
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
-                .usePlaintext()
-                .build();
-        blockingStub = SmartLightingGrpc.newBlockingStub(channel);
-
-        // Choose the room. 部屋選択用
-        String[] rooms = {"Living Room", "Kitchen", "Bedroom", "Bathroom"};
+        // 部屋の選択
+        String[] rooms = {"LivingRoom", "Kitchen", "Bedroom", "Bathroom"};
         roomSelector = new JComboBox<>(rooms);
 
-        // Button and label ボタンとラベル
+        // APIキー入力欄
+        apiKeyField = new JTextField();
+        apiKeyField.setToolTipText("Enter API Key");
+
+        // ボタンとステータスラベル
         turnOnButton = new JButton("Turn ON");
         turnOffButton = new JButton("Turn OFF");
         statusLabel = new JLabel("Status: Waiting", SwingConstants.CENTER);
 
-        // Button action. ボタン動作
+        // ボタンの動作
         turnOnButton.addActionListener(e -> sendLightCommand(true));
         turnOffButton.addActionListener(e -> sendLightCommand(false));
 
-        // Add in Panel. パネルに追加
+        // パネルに追加
+        add(new JLabel("Select Room:", SwingConstants.CENTER));
         add(roomSelector);
+        add(new JLabel("Enter API Key:", SwingConstants.CENTER));
+        add(apiKeyField);
         add(turnOnButton);
         add(turnOffButton);
         add(statusLabel);
@@ -57,16 +51,31 @@ public class SmartLightingClientGUI extends JFrame {
 
     private void sendLightCommand(boolean turnOn) {
         String room = (String) roomSelector.getSelectedItem();
-        LightRequest request = LightRequest.newBuilder().setRoom(room).build();
-        LightResponse response;
+        String apiKey = apiKeyField.getText();
+
+        String action = turnOn ? "on" : "off";
+        String urlStr = "http://localhost:8000/api/lighting/" + action + "?room=" + room;
 
         try {
-            if (turnOn) {
-                response = blockingStub.turnOnLight(request);
-            } else {
-                response = blockingStub.turnOffLight(request);
+            URL url = new URL(urlStr);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("x-api-key", apiKey);  // ← ヘッダーにAPIキーを追加
+            conn.setDoOutput(true);
+
+            int responseCode = conn.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    responseCode == 200 ? conn.getInputStream() : conn.getErrorStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
             }
-            statusLabel.setText("Status: " + response.getStatus());
+            in.close();
+
+            statusLabel.setText("Status: " + response.toString());
+
         } catch (Exception e) {
             statusLabel.setText("Error: " + e.getMessage());
         }
@@ -79,4 +88,3 @@ public class SmartLightingClientGUI extends JFrame {
         });
     }
 }
-
