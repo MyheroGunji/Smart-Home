@@ -20,7 +20,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().hasRole("API_USER")  // 認証されたAPIユーザーのみ許可
+                        .anyRequest().hasRole("API_USER")  // allows the access only authorized user
                 )
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class);

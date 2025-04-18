@@ -27,13 +27,13 @@ public class SecurityCameraClientGUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // gRPC接続
+        // connect to gRPC
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
                 .usePlaintext()
                 .build();
         asyncStub = SecurityCameraServiceGrpc.newStub(channel);
 
-        // UIパーツ
+        // UI parts
         JPanel topPanel = new JPanel(new GridLayout(2, 2));
         topPanel.add(new JLabel("API Key:"));
         apiKeyField = new JTextField();
@@ -88,20 +88,20 @@ public class SecurityCameraClientGUI extends JFrame {
         });
     }
 
-    // APIキーを設定するインターセプタを作成
+    // API key setting
     private SecurityCameraServiceGrpc.SecurityCameraServiceStub getStubWithApiKey() {
         String apiKey = apiKeyField.getText().trim();
         Metadata metadata = new Metadata();
         Metadata.Key<String> apiKeyHeader = Metadata.Key.of("x-api-key", Metadata.ASCII_STRING_MARSHALLER);
         metadata.put(apiKeyHeader, apiKey);
 
-        // ClientInterceptorを使用してヘッダーを追加
+        // ClientInterceptor, adding header
         ClientInterceptor interceptor = new ClientInterceptor() {
             @Override
             public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(
                     MethodDescriptor<ReqT, RespT> method, CallOptions callOptions, Channel next) {
 
-                // メタデータを含めるための新しいCallOptionsを作成
+                // new CallOptions to add metadata
                 CallOptions newCallOptions = callOptions.withCallCredentials(new CallCredentials() {
                     @Override
                     public void applyRequestMetadata(RequestInfo requestInfo, Executor executor, MetadataApplier metadataApplier) {
@@ -114,12 +114,12 @@ public class SecurityCameraClientGUI extends JFrame {
                     }
                 });
 
-                // 新しいCallOptionsを使ってClientCallを作成
+                // use new CallOptions to make ClientCallを作成
                 return next.newCall(method, newCallOptions);
             }
         };
 
-        // インターセプタ付きの新しいStubを作成
+        // make new Interceptor
         Channel channelWithInterceptor = ClientInterceptors.intercept(asyncStub.getChannel(), interceptor);
         return SecurityCameraServiceGrpc.newStub(channelWithInterceptor);
     }
@@ -164,7 +164,7 @@ public class SecurityCameraClientGUI extends JFrame {
 
 
     private void sendMotionEvent(String cameraId, String motionType) {
-        // MotionEventのリクエストを作成して送信
+        //  request MotionEvent のリクエストを作成して送信
         MotionEvent request = MotionEvent.newBuilder()
                 .setCameraId(cameraId)
                 .setMotionType(motionType)
@@ -173,7 +173,7 @@ public class SecurityCameraClientGUI extends JFrame {
 
         SecurityCameraServiceGrpc.SecurityCameraServiceStub stubWithAuth = getStubWithApiKey();
 
-        // サーバーに送信して応答を取得
+        // send server and get response サーバーに送信して応答を取得
         stubWithAuth.sendMotionAlert(request, new StreamObserver<MotionAck>() {
             @Override
             public void onNext(MotionAck response) {

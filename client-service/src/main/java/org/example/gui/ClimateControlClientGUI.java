@@ -67,7 +67,7 @@ public class ClimateControlClientGUI extends JFrame {
     }
 
     private void startMonitoring(String roomName, String apiKey) {
-        // ヘッダーにAPIキーを追加
+        // Add API key to the GUI header
         Metadata metadata = new Metadata();
         Metadata.Key<String> apiKeyHeader = Metadata.Key.of("x-api-key", Metadata.ASCII_STRING_MARSHALLER);
         metadata.put(apiKeyHeader, apiKey);

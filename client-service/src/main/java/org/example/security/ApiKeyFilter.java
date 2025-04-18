@@ -28,7 +28,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String apiKey = request.getHeader("X-API-KEY");
 
-        // デバッグ用に expectedApiKey を出力
+        // For debug - output expectedApiKey (デバッグ用に expectedApiKey を出力)
         System.out.println("Expected API Key: " + expectedApiKey);
         System.out.println("Received API Key: " + apiKey);
 
@@ -39,9 +39,9 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                             List.of(new SimpleGrantedAuthority("ROLE_API_USER")));
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            filterChain.doFilter(request, response); // OKなら次へ進む
+            filterChain.doFilter(request, response); // OK -> next
         } else {
-            System.out.println("Invalid API Key"); // デバッグ用
+            System.out.println("Invalid API Key"); // For debug
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
             response.getWriter().write("Invalid API Key");
         }
