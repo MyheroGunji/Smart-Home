@@ -76,7 +76,6 @@ eureka-server/
 
 ```
 ---
----
 
 ## 📁 `proto/`
 
