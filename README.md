@@ -45,14 +45,17 @@ Server-side gRPC service implementations for each smart home feature.
 
 ```
 grpc-service/
-└── src/
-    └── main/
-        └── java/
-            └── service/
-                ├── ClimateControlService.java     # Handles climate control functionalities
-                ├── SmartCameraService.java        # Handles camera monitoring and alerts
-                ├── SmartLighting.java             # Controls lighting features
-                └── GrpcServiceApplication.java    # Main entry point for the server
+├── src/
+│    └── main/
+│        └── java/
+│            └── service/
+│                ├── ClimateControlService.java     # Handles climate control functionalities
+│                ├── SmartCameraService.java        # Handles camera monitoring and alerts
+│                ├── SmartLighting.java             # Controls lighting features
+│                └── GrpcServiceApplication.java    # Main entry point for the server
+│ 
+└── pom.xml
+
 
 ```
 
@@ -64,12 +67,14 @@ Contains the `.proto` interface definitions for all services.
 
 ```
 proto/
-└── src/
-    └── main/
-        └── proto/
-            ├── climateControlService.proto        # Proto for temperature/humidity control
-            ├── SmartCameraService.proto           # Proto for camera-related streaming
-            └── SmartLighting.proto                # Proto for lighting operations
+├──  src/
+│    └── main/
+│         └── proto/
+│             ├── climateControlService.proto        # Proto for temperature/humidity control
+│             ├── SmartCameraService.proto           # Proto for camera-related streaming
+│             └── SmartLighting.proto                # Proto for lighting operations
+│
+└── pom.xml
 
 ```
 
