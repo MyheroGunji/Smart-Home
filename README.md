@@ -58,7 +58,24 @@ grpc-service/
 
 
 ```
+---
 
+## 📁 `eureka-server/`
+
+Client-side application that communicates with the gRPC server.
+
+```
+eureka-server/
+├── src/
+│   └── main/
+│       └── java/
+│           ├── EurekaServerApplication/                        
+│           └── resources/                
+│               ├── application.yml
+└── pom.xml
+
+```
+---
 ---
 
 ## 📁 `proto/`
