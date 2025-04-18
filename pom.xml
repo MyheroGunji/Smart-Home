@@ -8,6 +8,13 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.5</version> <!-- client-serviceと揃える -->
+		<relativePath/>
+	</parent>
+
 	<description>Demo project for Spring Boot</description>
 
 	<modules>
@@ -21,4 +28,18 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>2023.0.1</version> <!-- Spring Boot 3.2+ 対応 -->
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
 </project>

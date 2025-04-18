@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.4</version>
-        <relativePath/>
-        <!--  lookup parent from repository  -->
+        <groupId>org.example</groupId> <!-- おやPomの groupId に合わせて -->
+        <artifactId>SmartHomeProject</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath> <!-- 必要に応じて修正 -->
     </parent>
+
     <groupId>com.smart.home</groupId>
     <artifactId>grpc-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -21,6 +21,7 @@
         <grpc.version>1.70.0</grpc.version>
         <protobuf-java.version>3.25.6</protobuf-java.version>
         <spring-grpc.version>0.6.0</spring-grpc.version>
+        <lombok.version>1.18.30</lombok.version>
     </properties>
     <dependencies>
         <dependency>
@@ -53,29 +54,15 @@
             <artifactId>spring-grpc-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-        </dependency>
+
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.grpc</groupId>
                 <artifactId>spring-grpc-dependencies</artifactId>
                 <version>${spring-grpc.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-            </dependency>
-            <!-- Spring Cloudの設定 -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2023.0.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -92,6 +79,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -149,3 +137,4 @@
         </plugins>
     </build>
 </project>
+
