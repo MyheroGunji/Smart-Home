@@ -1,4 +1,4 @@
-# Smart Home Project - Structure Overview
+<img width="2253" height="486" alt="image" src="https://github.com/user-attachments/assets/198f1303-2910-4795-a128-4601c2ec356a" /># Smart Home Project - Structure Overview
 
 ## Author: **Mahiro Gunji** 
 
@@ -26,9 +26,7 @@ This project was developed to strengthen backend development, distributed system
 - API key-based security filter implementation
 
 ---
-## Architecture Diagram
-
-<img width="292" height="655" alt="image" src="https://github.com/user-attachments/assets/5dbb6a52-d5f7-4768-a186-b73b88d0e89c" />
+## gRPC Communication Flow
 
 ```text
 Protocol Buffers (.proto)
@@ -36,7 +34,9 @@ Protocol Buffers (.proto)
 Generate gRPC Stubs & Message Classes
         ↓
 Client ↔ Server Communication
-```
+
+## System Architecture 
+<img width="1200" height="486" alt="スクリーンショット 2026-05-15 180850" src="https://github.com/user-attachments/assets/0301de41-f145-4331-ba52-b8334bfaf09c" />
 
 ---
 
