@@ -2,13 +2,28 @@
 
 ## Author: **Mahiro Gunji** 
 
-This project is a gRPC-based Smart Home simulation that includes modular services for:
+## Overview
+A distributed smart home simulation system developed using Java, Spring Boot, gRPC, and Eureka Server.
 
--  Climate Control  
--  Smart Camera Monitoring  
--  Smart Lighting  
+The project simulates multiple smart home services including climate control, smart lighting, and security camera monitoring through modular gRPC-based communication between client and server applications.
 
-Below is the overall structure:
+This project was developed to strengthen backend development, distributed systems, service communication, and API integration skills.
+
+## Technologies
+- Java
+- Spring Boot
+- gRPC
+- Protocol Buffers
+- Eureka Server
+- Maven
+
+## Key Features
+- Modular smart home service architecture
+- gRPC-based client-server communication
+- Smart lighting and climate control simulation
+- Security camera monitoring services
+- Service discovery using Eureka Server
+- API key-based security filter implementation
 
 ---
 
