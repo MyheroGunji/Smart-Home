@@ -28,39 +28,7 @@ This project was developed to strengthen backend development, distributed system
 ---
 ## Architecture Diagram
 
-┌─────────────────────────────┐
-│        Client GUI Layer     │
-│─────────────────────────────│
-│ ClimateControlClientGUI     │
-│ SmartLightingClientGUI      │
-│ SecurityCameraClientGUI     │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│      gRPC Client Layer      │
-│─────────────────────────────│
-│ StubConfig                  │
-│ ApiKeyFilter                │
-│ Controller Classes          │
-└──────────────┬──────────────┘
-               │ gRPC Communication
-               ▼
-┌─────────────────────────────┐
-│      gRPC Service Layer     │
-│─────────────────────────────│
-│ ClimateControlService       │
-│ SmartLightingService        │
-│ SmartCameraService          │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│     Service Discovery       │
-│─────────────────────────────│
-│        Eureka Server        │
-└─────────────────────────────┘
-
+<img width="292" height="655" alt="image" src="https://github.com/user-attachments/assets/5dbb6a52-d5f7-4768-a186-b73b88d0e89c" />
 
 Protocol Buffers (.proto)
 ↓
