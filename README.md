@@ -26,6 +26,49 @@ This project was developed to strengthen backend development, distributed system
 - API key-based security filter implementation
 
 ---
+## Architecture Diagram
+
+┌─────────────────────────────┐
+│        Client GUI Layer     │
+│─────────────────────────────│
+│ ClimateControlClientGUI     │
+│ SmartLightingClientGUI      │
+│ SecurityCameraClientGUI     │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│      gRPC Client Layer      │
+│─────────────────────────────│
+│ StubConfig                  │
+│ ApiKeyFilter                │
+│ Controller Classes          │
+└──────────────┬──────────────┘
+               │ gRPC Communication
+               ▼
+┌─────────────────────────────┐
+│      gRPC Service Layer     │
+│─────────────────────────────│
+│ ClimateControlService       │
+│ SmartLightingService        │
+│ SmartCameraService          │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│     Service Discovery       │
+│─────────────────────────────│
+│        Eureka Server        │
+└─────────────────────────────┘
+
+
+Protocol Buffers (.proto)
+↓
+Generate gRPC Stubs & Message Classes
+↓
+Client ↔ Server Communication
+
+---
 
 ## 📁 `client-service/`
 
