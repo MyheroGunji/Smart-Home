@@ -1,5 +1,3 @@
-<img width="2253" height="486" alt="image" src="https://github.com/user-attachments/assets/198f1303-2910-4795-a128-4601c2ec356a" /># Smart Home Project - Structure Overview
-
 ## Author: **Mahiro Gunji** 
 
 ## Overview
