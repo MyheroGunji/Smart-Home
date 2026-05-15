@@ -32,6 +32,7 @@ Protocol Buffers (.proto)
 Generate gRPC Stubs & Message Classes
         ↓
 Client ↔ Server Communication
+```
 
 ## System Architecture 
 <img width="1200" height="486" alt="スクリーンショット 2026-05-15 180850" src="https://github.com/user-attachments/assets/0301de41-f145-4331-ba52-b8334bfaf09c" />
